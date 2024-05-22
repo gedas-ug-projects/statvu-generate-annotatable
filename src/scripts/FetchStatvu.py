@@ -21,8 +21,8 @@ if __name__ == "__main__":
         reset_Auth()
     else:
         if(not validate_Auth()):
+            print("No valid token.json file found. Aborting...")
             exit(0)
-
 
     game_log_list = query(f"'19PadFkgZA-Z5WF_lvI_fStQpfDdIMEtD' in parents")
     i = 0
@@ -48,7 +48,7 @@ if __name__ == "__main__":
         """
         if len(videos_list) == len(track_list):
             # create a dir for game_id
-            path = f"./src/data/automate/{game_log_name}"
+            path = f"./src/data/{game_log_name}"
             if not os.path.exists(path):
                 os.makedirs(path)
 

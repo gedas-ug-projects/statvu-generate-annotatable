@@ -50,13 +50,13 @@ def validate_Auth() -> bool:
     # time.
     SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
 
-    if os.path.exists("../auth/token.json"):
-        creds = Credentials.from_authorized_user_file("../auth/token.json", SCOPES)
+    if os.path.exists("./src/auth/token.json"):
+        creds = Credentials.from_authorized_user_file("./src/auth/token.json", SCOPES)
     # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:  
-        return False
-    else:
-        return True
+    if creds and creds.expired and creds.refresh_token:
+      creds.refresh(Request())
+
+    return not (creds is None or not creds.valid)
 
 def query(query: str) -> list[list[str]]:
     creds = Credentials.from_authorized_user_file("./src/auth/token.json")
@@ -116,7 +116,12 @@ def download_file(real_file_id, output_dir: str):
         pbar = tqdm(total=100, desc=f"Downloading {real_file_id}")
         while done is False:
             status, done = downloader.next_chunk()
+            pbar.reset()
             pbar.update(int(status.progress() * 100))
+            pbar.refresh()
+        # pbar.reset()
+        # pbar.update(100)
+        pbar.close()
 
     except HttpError as error:
         print(f"An error occurred: {error}")
