@@ -219,6 +219,8 @@ def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_numb
         print('INFO: check if tracks for this frame is NULL; check if file path is correct')
         plt.close('all')
 
+
+# TODO remove script code after testing
 if __name__ == "__main__":
     title = '01-14-2016.SAC.NOP.17647.Q2.2D-POS'
     track_file_path = f'./src/data/{title}.json'

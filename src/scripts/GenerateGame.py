@@ -58,5 +58,5 @@ else:
         print("Invalid argument: '--vid_path' must be specified.")
     else:
         total_frame = getTotalFrames(args.pos_2d_path)
-        for frame_num in range(3500, 3600, args.frame_inc):
+        for frame_num in range(0, total_frame, args.frame_inc):
             animate_image(args.vid_path, args.pos_2d_path, args.game_log_path, frame_num)

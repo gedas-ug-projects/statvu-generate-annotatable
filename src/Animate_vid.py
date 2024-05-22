@@ -1,11 +1,15 @@
+# TODO update or remove this module 
+# Update: use Animate_img to generate each frame instead of keep two versions.
+# Delete: video generation was only used for quick testing. Not meant for the original pipeline.
+
 import json
 import csv
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from .Constant import Constant
-from .player import Player
-from .team import Team
+from .Player import Player
+from .Team import Team
 
 
 
@@ -197,6 +201,7 @@ def write_frame_num(img, frame_num: int):
     
     return img
 
+# TODO remove script code after testing
 if __name__ == "__main__":
     title = '01-14-2016.SAC.NOP.17647.Q2.2D-POS'
     track_file_path = f'./src/data/{title}.json'
