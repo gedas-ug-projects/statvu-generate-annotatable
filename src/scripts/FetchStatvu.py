@@ -6,9 +6,16 @@ from ..DriveHandler import *
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-n", type=int, default=5, help="Number of games to fetch. Default: 5.")
+parser.add_argument(
+    "-n", type=int, default=5, help="Number of games to fetch. Default: 5."
+)
 
-parser.add_argument("-has_browser", type=bool, default=False, help="Whether the environment supports browser verification. Default: False.")
+parser.add_argument(
+    "-has_browser",
+    type=bool,
+    default=False,
+    help="Whether the environment supports browser verification. Default: False.",
+)
 
 args = parser.parse_args()
 
@@ -16,11 +23,11 @@ if __name__ == "__main__":
     # With GUI: reset_Auth() will work
     # Without GUI: must transfer in the refresh token
     #     therefore, will need a token validation function
-    
+
     if args.has_browser:
         reset_Auth()
     else:
-        if(not validate_Auth()):
+        if not validate_Auth():
             print("No valid token.json file found. Aborting...")
             exit(0)
 
@@ -39,7 +46,11 @@ if __name__ == "__main__":
         track_list = query(
             f"'1OCxnK8ssQTlD_osH9b3OsFI39lCIFbms' in parents and name contains '{game_id}'"
         )
-        game_log_json_name, game_log_json_id, game_log_json_size = query(f"'{game_log_id}' in parents")[0]  # implied that only one file is in the game log dir
+        game_log_json_name, game_log_json_id, game_log_json_size = query(
+            f"'{game_log_id}' in parents"
+        )[
+            0
+        ]  # implied that only one file is in the game log dir
 
         """
         Video and 2d track matching is basic. Sort the video and track files (done by query()) and they 
@@ -57,21 +68,28 @@ if __name__ == "__main__":
             procs = []
             # create process for downloading game_log
             game_log_id
-            game_log_proc = Process(target=download_file, args=(game_log_json_id, f"{path}/{game_log_name}.json"))
+            game_log_proc = Process(
+                target=download_file,
+                args=(game_log_json_id, f"{path}/{game_log_name}.json"),
+            )
             procs.append(game_log_proc)
-            
+
             # create process for downloading videos and tracks
             for i in range(0, len(videos_list)):
                 vid_name, vid_id, track_size = videos_list[i]
                 track_name, track_id, track_size = track_list[i]
-                new_vid_name = ".".join([s for s in track_name.split('.')[:-1]])
+                new_vid_name = ".".join([s for s in track_name.split(".")[:-1]])
 
-                vid_proc = Process(target=download_file, args=(vid_id, f"{path}/{new_vid_name}.mp4"))
-                track_proc = Process(target=download_file, args=(track_id, f"{path}/{track_name}"))
+                vid_proc = Process(
+                    target=download_file, args=(vid_id, f"{path}/{new_vid_name}.mp4")
+                )
+                track_proc = Process(
+                    target=download_file, args=(track_id, f"{path}/{track_name}")
+                )
                 procs += [vid_proc, track_proc]
 
             for proc in procs:
                 proc.start()
-                
+
             for proc in procs:
                 proc.join()
