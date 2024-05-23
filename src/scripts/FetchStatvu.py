@@ -39,6 +39,8 @@ if __name__ == "__main__":
         track_list = query(
             f"'1OCxnK8ssQTlD_osH9b3OsFI39lCIFbms' in parents and name contains '{game_id}'"
         )
+        game_log_json_name, game_log_json_id, game_log_json_size = query(f"'{game_log_id}' in parents")[0]  # implied that only one file is in the game log dir
+
         """
         Video and 2d track matching is basic. Sort the video and track files (done by query()) and they 
         will naturally match. The limitation of this is that the number of videos and tracks must match. 
@@ -52,13 +54,19 @@ if __name__ == "__main__":
             if not os.path.exists(path):
                 os.makedirs(path)
 
-
             procs = []
+            # create process for downloading game_log
+            game_log_id
+            game_log_proc = Process(target=download_file, args=(game_log_json_id, f"{path}/{game_log_name}.json"))
+            procs.append(game_log_proc)
+            
+            # create process for downloading videos and tracks
             for i in range(0, len(videos_list)):
                 vid_name, vid_id, track_size = videos_list[i]
                 track_name, track_id, track_size = track_list[i]
-                name = ".".join([s for s in track_name.split('.')[:-1]])
-                vid_proc = Process(target=download_file, args=(vid_id, f"{path}/{name}.mp4"))
+                new_vid_name = ".".join([s for s in track_name.split('.')[:-1]])
+
+                vid_proc = Process(target=download_file, args=(vid_id, f"{path}/{new_vid_name}.mp4"))
                 track_proc = Process(target=download_file, args=(track_id, f"{path}/{track_name}"))
                 procs += [vid_proc, track_proc]
 
