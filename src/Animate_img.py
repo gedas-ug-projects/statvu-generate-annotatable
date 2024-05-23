@@ -198,6 +198,8 @@ def write_frame_num(img, frame_num: int):
     return img
 
 def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_number: int):
+    # Frame compensation: due to inaccuracy in the dataset, some frame compensation may be required
+    frame_compensation = 28
     title = parseFileName(track_path)
     # extract information from 2d-position json and game-log json
     if Cache.isSameGame(track_path, game_log_path):
@@ -210,12 +212,12 @@ def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_numb
 
     try:
         pos_2d = get_player_position(title, track_data, player_dict, frame_number)
-        vid_frame = getFrame(frame_number + 28, vid_path)
+        vid_frame = getFrame(frame_number + frame_compensation, vid_path)
         result_path = f'./output/{title}.frame-{frame_number}.png'
         concat_img(vid_frame, pos_2d, result_path)  # for now don't save image
         plt.close('all')
     except Exception as error:
-        print(f'Encountered and Handled Error: {error}')
+        print(f'Encountered and Handled Error for frame {frame_number}: {error}')
         print('INFO: check if tracks for this frame is NULL; check if file path is correct')
         plt.close('all')
 
