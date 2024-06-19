@@ -1,3 +1,9 @@
+"""
+Deprecated automation script for fetching statvu dataset from Google Drive API.
+
+Please refer to sunflower server for faster dataset access. 
+"""
+
 import argparse
 import os
 from multiprocessing import Process
@@ -19,6 +25,11 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+# Constants
+STATVU_GAME_LOGS = "19PadFkgZA-Z5WF_lvI_fStQpfDdIMEtD"
+DIR_720 = "1-0K7OsofHtGtXQon9kJIeqyyuYgQmhO9"
+DIR_2D_PLAYER_POSITION = "1OCxnK8ssQTlD_osH9b3OsFI39lCIFbms"
+
 if __name__ == "__main__":
     # With GUI: reset_Auth() will work
     # Without GUI: must transfer in the refresh token
@@ -31,7 +42,7 @@ if __name__ == "__main__":
             print("No valid token.json file found. Aborting...")
             exit(0)
 
-    game_log_list = query(f"'19PadFkgZA-Z5WF_lvI_fStQpfDdIMEtD' in parents")
+    game_log_list = query(f"'{STATVU_GAME_LOGS}' in parents")
     i = 0
 
     for game_log_name, game_log_id, size in game_log_list:
@@ -41,10 +52,10 @@ if __name__ == "__main__":
 
         game_id = game_log_name.split(".")[-1]
         videos_list = query(
-            f"'1-0K7OsofHtGtXQon9kJIeqyyuYgQmhO9' in parents and name contains '{game_id}'"
+            f"'{DIR_720}' in parents and name contains '{game_id}'"
         )
         track_list = query(
-            f"'1OCxnK8ssQTlD_osH9b3OsFI39lCIFbms' in parents and name contains '{game_id}'"
+            f"'{DIR_2D_PLAYER_POSITION}' in parents and name contains '{game_id}'"
         )
         game_log_json_name, game_log_json_id, game_log_json_size = query(
             f"'{game_log_id}' in parents"
