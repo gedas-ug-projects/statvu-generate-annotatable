@@ -16,7 +16,7 @@ args = parser.parse_args()
 
 
 def calcNumOfPeriods(game_path: str) -> int:
-    num_files = len(os.listdir(f"./src/data/{game_name}"))
+    num_files = len(os.listdir(f"./data/{game_name}"))
     """
     There's always a game_log file and a track file + video for each period...
     """
@@ -26,20 +26,20 @@ def calcNumOfPeriods(game_path: str) -> int:
 if __name__ == "__main__":
     games_dir = [
         name
-        for name in os.listdir("./src/data")
-        if os.path.isdir(os.path.join("./src/data", name))
+        for name in os.listdir("./data")
+        if os.path.isdir(os.path.join("./data", name))
     ]
 
     for game_name in games_dir:
-        game_log_path = f"./src/data/{game_name}/{game_name}.json"
+        game_log_path = f"./data/{game_name}/{game_name}.json"
 
         if not os.path.exists(game_log_path):
             print(f"Game log path ({game_log_path}) does not exit. Aborting...")
             exit(0)
 
-        for period_i in range(1, calcNumOfPeriods(f"./src/data/{game_name}") + 1):
-            vid_path = f"./src/data/{game_name}/{game_name}.Q{period_i}.2D-POS.mp4"
-            track_path = f"./src/data/{game_name}/{game_name}.Q{period_i}.2D-POS.json"
+        for period_i in range(1, calcNumOfPeriods(f"./data/{game_name}") + 1):
+            vid_path = f"./data/{game_name}/{game_name}.Q{period_i}.2D-POS.mp4"
+            track_path = f"./data/{game_name}/{game_name}.Q{period_i}.2D-POS.json"
 
             if not os.path.exists(vid_path) and not os.path.exists(track_path):
                 print(

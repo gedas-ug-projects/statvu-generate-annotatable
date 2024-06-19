@@ -108,7 +108,7 @@ def get_img_player_w_court(title: str, frame_num: int, track_data, player_dict: 
         # Add text on top of the circle
         text = ax.text(x, y, chr(ord('A') + index), color='black', ha='center', va='center')
 
-    court = plt.imread("./src/data/court.png")
+    court = plt.imread("./data/court.png")
     plt.imshow(court, zorder=0, extent=[Constant.X_MIN, Constant.X_MAX, Constant.Y_MAX, Constant.Y_MIN])
 
     # Now, loop through coord arrays, and create a circle at each x,y pair
@@ -225,8 +225,8 @@ def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_numb
 # TODO remove script code after testing
 if __name__ == "__main__":
     title = '01-14-2016.SAC.NOP.17647.Q2.2D-POS'
-    track_file_path = f'./src/data/{title}.json'
-    game_log_path = './src/data/01-14-2016.SAC.NOP.17647.json'
+    track_file_path = f'./data/{title}.json'
+    game_log_path = './data/01-14-2016.SAC.NOP.17647.json'
     # extract information from 2d-position json and game-log json
     track_data = extract_player_tracking(track_file_path)
     player_dict = extract_player_info(game_log_path)
@@ -235,7 +235,7 @@ if __name__ == "__main__":
 
     try:
         pos_2d = get_player_position(title, track_data, player_dict, frame_number)
-        vid_frame = getFrame(frame_number, './src/data/17647_01-14-2016_3225_Sacramento Kings_3279_New Orleans Pelicans_period2.mp4')
+        vid_frame = getFrame(frame_number, './data/17647_01-14-2016_3225_Sacramento Kings_3279_New Orleans Pelicans_period2.mp4')
         result_path = f'./output/{title}.frame-{frame_number}.png'
         concat_img(vid_frame, pos_2d, result_path)  # for now don't save image
         plt.close('all')

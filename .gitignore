@@ -4,9 +4,9 @@
 __pycache__/
 output/*
 src/auth/*
-src/data/*
-
+data/*
+.aws/*
 
 !output/.gitkeep
 !src/auth/.gitkeep
-!src/data/court.png
+!data/court.png

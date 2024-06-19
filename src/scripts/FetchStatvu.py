@@ -61,7 +61,7 @@ if __name__ == "__main__":
         """
         if len(videos_list) == len(track_list):
             # create a dir for game_id
-            path = f"./src/data/{game_log_name}"
+            path = f"./data/{game_log_name}"
             if not os.path.exists(path):
                 os.makedirs(path)
 

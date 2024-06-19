@@ -21,4 +21,4 @@ If you cannot match the player with its corresponding label, you can select the 
 <<NOTE>>
 id of short cutes will not return anything
  
-python -m src.GenerateFrame --vid_path './src/data/17647_01-14-2016_3225_Sacramento Kings_3279_New Orleans Pelicans_period1.mp4' --pos_2d_path './src/data/01-14-2016.SAC.NOP.17647.Q1.2D-POS.json' --game_log_path='./src/data/01-14-2016.SAC.NOP.17647.json' --frame_num 6000
+python -m src.GenerateFrame --vid_path './data/17647_01-14-2016_3225_Sacramento Kings_3279_New Orleans Pelicans_period1.mp4' --pos_2d_path './data/01-14-2016.SAC.NOP.17647.Q1.2D-POS.json' --game_log_path='./data/01-14-2016.SAC.NOP.17647.json' --frame_num 6000
