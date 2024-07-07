@@ -1,3 +1,7 @@
+"""
+Automation script for generating game and 2D position side-by-side images for the entire video. 
+"""
+
 import argparse
 from ..Animate_img import animate_image
 from ..Util import getTotalFrames

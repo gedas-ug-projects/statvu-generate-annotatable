@@ -1,3 +1,9 @@
+"""
+Automation script for generating game and 2d postion image side-by-side. 
+
+This script is written specifically for statvu dataset file structure and naming convention. 
+"""
+
 from ..Animate_img import animate_image
 from ..Util import getTotalFrames
 import os
