@@ -45,6 +45,3 @@ use `-h` for help with the scripts
 `./src/notebooks/`: contains all jupyter notebooks used by the author for debugging and sandbox environments
 
 `./src/scripts/`: the default directory for all automation scripts 
-
-
-# AWS S3 Setup
