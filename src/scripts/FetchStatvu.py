@@ -1,5 +1,5 @@
 """
-Deprecated automation script for fetching statvu dataset from Google Drive API.
+DEPRECATED automation script for fetching statvu dataset from Google Drive API.
 
 Please refer to sunflower server for faster dataset access. 
 """

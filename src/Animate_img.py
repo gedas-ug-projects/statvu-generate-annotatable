@@ -108,7 +108,7 @@ def get_img_player_w_court(title: str, frame_num: int, track_data, player_dict: 
         # Add text on top of the circle
         text = ax.text(x, y, chr(ord('A') + index), color='black', ha='center', va='center')
 
-    court = plt.imread("./data/court.png")
+    court = plt.imread("./resources/court.png")
     plt.imshow(court, zorder=0, extent=[Constant.X_MIN, Constant.X_MAX, Constant.Y_MAX, Constant.Y_MIN])
 
     # Now, loop through coord arrays, and create a circle at each x,y pair
@@ -199,7 +199,7 @@ def write_frame_num(img, frame_num: int):
 
 def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_number: int):
     # Frame compensation: due to inaccuracy in the dataset, some frame compensation may be required
-    frame_compensation = 28
+    frame_compensation = 0  # used to offset a fix number of frames to compensate for inaccuracy. 0 means no offset
     title = parseFileName(track_path)
     # extract information from 2d-position json and game-log json
     if Cache.isSameGame(track_path, game_log_path):

@@ -4,6 +4,7 @@ Automation script for generating game and 2d postion image side-by-side.
 This script is written specifically for statvu dataset file structure and naming convention. 
 """
 
+from ..Constant import Constant
 from ..Animate_img import animate_image
 from ..Util import getTotalFrames
 import os
@@ -20,39 +21,79 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-
-def calcNumOfPeriods(game_path: str) -> int:
-    num_files = len(os.listdir(f"./data/{game_name}"))
-    """
-    There's always a game_log file and a track file + video for each period...
-    """
-    return (num_files - 1) // 2
-
-
 if __name__ == "__main__":
-    games_dir = [
+    game_log_names = [
         name
-        for name in os.listdir("./data")
-        if os.path.isdir(os.path.join("./data", name))
+        for name in os.listdir(Constant.DATA_DIR + Constant.GAME_LOGS)
+        if os.path.isdir(Constant.DATA_DIR + Constant.GAME_LOGS + f"/{name}")
     ]
 
-    for game_name in games_dir:
-        game_log_path = f"./data/{game_name}/{game_name}.json"
+    count = 0
 
-        if not os.path.exists(game_log_path):
-            print(f"Game log path ({game_log_path}) does not exit. Aborting...")
-            exit(0)
+    for game_log_name in game_log_names:
+        # get game id
+        game_id = game_log_name.split(".").pop()
 
-        for period_i in range(1, calcNumOfPeriods(f"./data/{game_name}") + 1):
-            vid_path = f"./data/{game_name}/{game_name}.Q{period_i}.2D-POS.mp4"
-            track_path = f"./data/{game_name}/{game_name}.Q{period_i}.2D-POS.json"
+        # game log access setup
+        abs_game_log_dir = f"{Constant.DATA_DIR}{Constant.GAME_LOGS}{game_log_name}/"
+        game_logs = [f"{abs_game_log_dir}/{log_name}" for log_name in os.listdir(abs_game_log_dir)]
 
-            if not os.path.exists(vid_path) and not os.path.exists(track_path):
+        if (len(game_logs) == 0):
+            print(f"Could not read game_log in {abs_game_log_dir}")
+            continue
+
+        game_log_pth = game_logs.pop()
+
+        # 2d player position access setup
+        track_names = [
+            file_name
+            for file_name in os.listdir(
+                f"{Constant.DATA_DIR}{Constant.PLAYER_2D_POSITION}"
+            )
+            if game_id in file_name
+        ]
+
+        track_names = sorted(track_names)
+
+        player_2d_tracks_pths = [
+            f"{Constant.DATA_DIR}{Constant.PLAYER_2D_POSITION}{track_name}"
+            for track_name in track_names
+        ]
+
+        # game replay access setup
+        replay_names = [
+            file_name
+            for file_name in os.listdir(
+                f"{Constant.DATA_DIR}{Constant.GAME_REPLAYS}"
+            )
+            if game_id in file_name
+        ]
+        
+        replay_names = sorted(replay_names)
+
+        game_replays_pths = [
+            f"{Constant.DATA_DIR}{Constant.GAME_REPLAYS}{replay_name}"
+            for replay_name in replay_names
+        ]
+
+        # For now, if there's different number of game periods in player tracks and game replays, the game will be skipped        
+        if len(player_2d_tracks_pths) != len(game_replays_pths):
+            print(f"Skipping game with id of '{game_id}' has different number of periods for player-2d-tracks and game-replays")
+            continue
+
+        for period in range(1, len(player_2d_tracks_pths) + 1):
+            vid_pth = game_replays_pths[period]
+            track_pth = player_2d_tracks_pths[period]
+
+            # validae that there video and track files exist
+            if not os.path.exists(vid_pth) and not os.path.exists(track_pth):
                 print(
-                    f"Video path ({vid_path}) or track path ({track_path}) does not exist. Aborting..."
+                    f"Video path ({vid_pth}) or track path ({track_pth}) does not exist. Skipping..."
                 )
-                exit(0)
+                continue
 
-            total_frame = getTotalFrames(track_path)
+            total_frame = getTotalFrames(track_pth)
             for frame_num in range(0, total_frame, args.frame_inc):
-                animate_image(vid_path, track_path, game_log_path, frame_num)
+                animate_image(vid_pth, track_pth, game_log_pth, frame_num)
+
+    print(count)

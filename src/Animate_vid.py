@@ -112,7 +112,7 @@ def get_img_player_w_court(title: str, frame_num: int, track_data, player_dict: 
         # Add text on top of the circle
         text = ax.text(x, y, chr(ord('A') + index), color='black', ha='center', va='center')
 
-    court = plt.imread("./data/court.png")
+    court = plt.imread("./resources/court.png")
     plt.imshow(court, zorder=0, extent=[Constant.X_MIN, Constant.X_MAX, Constant.Y_MAX, Constant.Y_MIN])
 
     # Now, loop through coord arrays, and create a circle at each x,y pair
