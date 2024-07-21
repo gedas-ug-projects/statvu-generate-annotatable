@@ -219,7 +219,7 @@ def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_numb
     try:
         pos_2d = get_player_position(title, track_data, player_dict, frame_number)
         vid_frame = getFrame(frame_number + frame_compensation, vid_path)
-        result_path = f'./output/{title}.frame-{frame_number}.png'
+        result_path = f'./output/{title}/{title}.frame-{frame_number}.png'
         concat_img(vid_frame, pos_2d, result_path)  # for now don't save image
         plt.close('all')
     except Exception as error:

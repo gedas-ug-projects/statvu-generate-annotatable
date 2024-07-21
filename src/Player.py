@@ -12,3 +12,6 @@ class Player:
         self.lname = lname
         self.jersey = jersey_number
         self.team = team
+
+    def __repr__(self):
+        return f"[id: {self.id}, fname: {self.fname}, lname: {self.lname}, jersey: {self.jersey}, team: {self.team.id}"

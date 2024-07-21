@@ -1,7 +1,9 @@
 """
-DEPRECATED automation script for fetching statvu dataset from Google Drive API.
+DEPRECATED 
 
-Please refer to sunflower server for faster dataset access. 
+Please refer to sunflower server for faster dataset access.
+
+Automation script for fetching statvu dataset from Google Drive API.
 """
 
 import argparse
