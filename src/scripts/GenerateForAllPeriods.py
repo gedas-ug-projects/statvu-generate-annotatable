@@ -13,7 +13,7 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
-    "-frame_inc",
+    "--frame_inc",
     type=int,
     default=15,
     help="Number of frames between two consecutive sample.",
@@ -27,8 +27,6 @@ if __name__ == "__main__":
         for name in os.listdir(Constant.DATA_DIR + Constant.GAME_LOGS)
         if os.path.isdir(Constant.DATA_DIR + Constant.GAME_LOGS + f"/{name}")
     ]
-
-    count = 0
 
     for game_log_name in game_log_names:
         # get game id
@@ -95,5 +93,3 @@ if __name__ == "__main__":
             total_frame = getTotalFrames(track_pth)
             for frame_num in range(0, total_frame, args.frame_inc):
                 animate_image(vid_pth, track_pth, game_log_pth, frame_num)
-
-    print(count)

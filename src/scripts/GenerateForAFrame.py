@@ -53,7 +53,7 @@ if args.video:
         exit(0)
 else:
     if (args.frame_num == None):
-        print("Invalid argument: '--frame_number' must be specified.")
+        print("Invalid argument: '--frame_num' must be specified.")
     elif (args.vid_path == None): 
         print("Invalid argument: '--vid_path' must be specified.")
     else:

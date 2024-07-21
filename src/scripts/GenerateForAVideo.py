@@ -39,7 +39,7 @@ parser.add_argument(
     "--frame_inc",
     type=int,
     nargs="?",
-    default=1,
+    default=15,
     help="Number of frames to increment by. Defaults to 1.",
 )
 

@@ -3,6 +3,8 @@ import csv
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
+import traceback
+
 from .Constant import Constant
 from .Player import Player
 from .Team import Team
@@ -70,12 +72,16 @@ def extract_player_info(path: str) -> dict[int, Player]:
     return player_dict
 
 def get_player_on_court(track_data, player_dict: dict[int, Player], frame):
-    player_on_court = {}
-    track_data_frame = track_data[str(frame)]
-    for player in track_data_frame["player_positions"][1:]:
-        player_on_court[player["player_id"]] = player_dict[player["player_id"]]
+    try:
+        player_on_court = {}
+        track_data_frame = track_data[str(frame)]
+        for player in track_data_frame["moment"]["player_positions"][1:]:
+            player_on_court[player["player_id"]] = player_dict[player["player_id"]]
 
-    return player_on_court
+        return player_on_court
+    except Exception: 
+        traceback.print_exc()
+        exit(1)
 
 def get_img_player_w_court(title: str, frame_num: int, track_data, player_dict: dict[int, Player]):
     """
@@ -93,14 +99,14 @@ def get_img_player_w_court(title: str, frame_num: int, track_data, player_dict: 
 
     track_data_frame = track_data[str(frame_num)]
 
-    for player in track_data_frame["player_positions"][1:]:
+    for player in track_data_frame["moment"]["player_positions"][1:]:
         player_info = player_dict.get(player["player_id"])
         x = player["x_position"]
         y = player["y_position"]
         t_circle = plt.Circle((x, y), Constant.TEAM_CIRCLE_SIZE, color=player_info.team.color)
         team_circles.append(t_circle)
 
-    for index, player in enumerate(track_data_frame["player_positions"][1:]):
+    for index, player in enumerate(track_data_frame["moment"]["player_positions"][1:]):
         x = player["x_position"]
         y = player["y_position"]
         p_circle = plt.Circle((x, y), Constant.PLAYER_CIRCLE_SIZE, color='#FFFFFF')
@@ -134,7 +140,7 @@ def create_csv_id_jersey(title: str, write_path: str, frame: int, track_data, pl
 
     row.append(title + '.frame-' + str(frame))
 
-    for index, player_json in enumerate(track_data_frame["player_positions"][1:]):
+    for index, player_json in enumerate(track_data_frame["moment"]["player_positions"][1:]):
         player_id: int = player_json["player_id"]
         player = player_dict[player_id]
         row.append(chr(ord('A') + index))
@@ -220,6 +226,7 @@ def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_numb
         print(f'Encountered and Handled Error for frame {frame_number}: {error}')
         print('INFO: check if tracks for this frame is NULL; check if file path is correct')
         plt.close('all')
+        traceback.print_exc()
 
 
 # TODO remove script code after testing
