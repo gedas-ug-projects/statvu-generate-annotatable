@@ -4,7 +4,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import traceback
-
+import os
 from .Constant import Constant
 from .Player import Player
 from .Team import Team
@@ -207,6 +207,7 @@ def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_numb
     # Frame compensation: due to inaccuracy in the dataset, some frame compensation may be required
     frame_compensation = 0  # used to offset a fix number of frames to compensate for inaccuracy. 0 means no offset
     title = parseFileName(track_path)
+    if not os.path.exists(f'./output/{title}'): os.mkdir(f'./output/{title}')
     # extract information from 2d-position json and game-log json
     if Cache.isSameGame(track_path, game_log_path):
         track_data = Cache.prev_track_data
@@ -215,7 +216,7 @@ def animate_image(vid_path: str, track_path: str, game_log_path: str, frame_numb
         track_data = extract_player_tracking(track_path)
         player_dict = extract_player_info(game_log_path)
         Cache.refreshCache(track_path, game_log_path, track_data, player_dict)
-
+    
     try:
         pos_2d = get_player_position(title, track_data, player_dict, frame_number)
         vid_frame = getFrame(frame_number + frame_compensation, vid_path)
